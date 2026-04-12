@@ -1,0 +1,8 @@
+
+{
+  "name": "smart-timetable-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "echo Run frontend here"
+  }
+}
