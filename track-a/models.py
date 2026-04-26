@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import sqlite3
 
 conn = sqlite3.connect("db.sqlite3", check_same_thread=False)
@@ -134,3 +135,26 @@ def unlock_achievement(name, description):
 def fetch_achievements():
     cursor.execute("SELECT * FROM achievements")
     return cursor.fetchall()
+=======
+from db import (
+    insert_event, fetch_events, insert_task, fetch_tasks, update_task_status,
+    log_focus, fetch_focus_logs, set_profile, get_profile,
+    unlock_achievement as db_unlock_achievement, fetch_achievements
+)
+import datetime
+
+# Wrap some functions to match old signatures if needed
+def log_focus_session(duration, subject, points):
+    start_time = datetime.datetime.now().isoformat()
+    log_focus(start_time, duration, points, subject)
+
+def unlock_achievement(name, description=""):
+    # Ignoring description as per strict schema
+    db_unlock_achievement(name)
+
+def get_profile_value(key, default=None):
+    return get_profile(key, default)
+
+def set_profile_value(key, value):
+    set_profile(key, value)
+>>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)

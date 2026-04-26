@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 import re
+<<<<<<< HEAD
 from datetime import datetime
 
 load_dotenv()
@@ -11,6 +12,48 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
+=======
+from datetime import datetime, timedelta
+
+load_dotenv()
+
+GEMINI_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_KEY:
+    genai.configure(api_key=GEMINI_KEY)
+else:
+    print("Warning: GEMINI_API_KEY not found. AI Assistant will use fallback mode.")
+
+# Use a working fallback if Gemini fails
+def fallback_nlp(query):
+    query = query.lower()
+    now = datetime.now()
+    
+    if "schedule" in query or "class" in query or "meeting" in query:
+        # Simple extraction
+        title = query.replace("schedule", "").replace("class", "").replace("meeting", "").strip()
+        start = (now + timedelta(hours=1)).isoformat() + "Z"
+        end = (now + timedelta(hours=2)).isoformat() + "Z"
+        return {"action": "create", "title": title or "New Event", "start": start, "end": end}
+    
+    if "task" in query or "todo" in query or "assignment" in query:
+        title = query.replace("task", "").replace("todo", "").replace("assignment", "").replace("add", "").strip()
+        due = (now + timedelta(days=1)).isoformat()
+        return {"action": "task", "title": title or "New Task", "due_date": due}
+    
+    if "study" in query and "plan" in query:
+        return {"action": "study_plan", "subjects": ["Math", "Physics", "CS"]}
+    
+    if "focus" in query or "pomodoro" in query:
+        return {"action": "focus", "subject": "Study", "duration": 25}
+    
+    if "stats" in query or "analytics" in query:
+        return {"action": "stats"}
+    
+    if "recommend" in query or "best time" in query:
+        return {"action": "recommend", "subject": "Study"}
+
+    return {"action": "unknown", "response": "I understood your query but I'm in fallback mode. Try 'schedule math' or 'add task homework'."}
+>>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
 
 def extract_json(text):
     """Extract JSON from messy AI output"""
@@ -22,10 +65,19 @@ def extract_json(text):
         pass
     return None
 
+<<<<<<< HEAD
 
 def process_query(query):
     now = datetime.now().isoformat()
     
+=======
+def process_query(query):
+    now = datetime.now().isoformat()
+    
+    if not GEMINI_KEY:
+        return fallback_nlp(query)
+    
+>>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
     prompt = f"""
     You are a Smart Academic OS Assistant.
     Current Time: {now}
@@ -63,12 +115,22 @@ def process_query(query):
     """
 
     try:
+<<<<<<< HEAD
+=======
+        model = genai.GenerativeModel("gemini-1.5-flash")
+>>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
         response = model.generate_content(prompt)
         text = response.text.strip()
         data = extract_json(text)
         if data:
             return data
     except Exception as e:
+<<<<<<< HEAD
         print(f"AI Error: {e}")
 
     return {"action": "unknown"}
+=======
+        print(f"AI Error (switching to fallback): {e}")
+
+    return fallback_nlp(query)
+>>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)

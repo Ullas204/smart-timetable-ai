@@ -2,7 +2,16 @@ from google_calendar import get_events, check_conflict
 import datetime
 
 def find_free_slots(duration_hours=1, days_ahead=3):
+<<<<<<< HEAD
     events = get_events()
+=======
+    try:
+        events = get_events()
+    except Exception as e:
+        print(f"Google Calendar access failed: {e}")
+        events = []
+    
+>>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
     now = datetime.datetime.utcnow()
     # Simple algorithm to find gaps
     # For simulation, we'll just check hours in the day
