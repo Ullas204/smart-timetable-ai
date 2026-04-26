@@ -1,195 +1,189 @@
-# 🎓 Smart Academic OS (Smart Timetable Assistant AI)
+# 🎓 Smart Academic OS (Next-Gen Smart Timetable AI)
 
-An **AI-powered academic operating system** that helps students manage schedules, optimize study time, track productivity, and automate academic workflows — all in one place.
+An **AI-powered academic productivity system** that helps students manage schedules, optimize study time, and stay consistent using intelligent automation, analytics, and gamification.
 
 ---
 
 ## 🚀 Project Overview
 
-Smart Academic OS is an upgraded version of a Smart Timetable Assistant that combines:
+**Smart Academic OS** is an upgraded version of the Smart Timetable Assistant.
 
-* 📅 Intelligent scheduling
-* 🤖 AI-powered assistance
-* 📊 Productivity tracking
-* 🎯 Focus & gamification
-* 🔗 Integration with external platforms
+It combines:
 
-It acts as a **personal academic assistant** that not only schedules tasks but also helps you **study smarter**.
+* 📅 Smart Scheduling
+* 🤖 AI Assistant
+* 📊 Productivity Analytics
+* 🎯 Focus Tracking
+* 🏆 Gamification
+
+👉 All in one unified system.
 
 ---
 
-## ✨ Features
+## ✨ Core Features
 
 ### 📅 Smart Calendar System
 
-* View all events in an interactive calendar
-* Add, update, and manage events
-* Conflict detection with smart suggestions
-* Google Calendar integration (sync enabled)
+* Add & view events
+* Real-time event tracking
+* Conflict-safe scheduling
+* SQLite-based persistence
 
 ---
 
-### 🤖 AI Assistant (Working)
+### 🤖 AI Scheduling Assistant
 
-* Natural language scheduling
-  *Example: "Schedule math study at 5 PM"*
-* AI-based study plan generation
-* Fallback logic if API fails (ensures reliability)
+* Natural language input
+  *Example: “Schedule math at 5 PM”*
+* Gemini API integration
+* ⚡ Fallback NLP if API fails (NO BREAKAGE)
 
 ---
 
-### 🧠 Predictive Study Optimizer
+### ⚠️ Conflict Detection
 
-* Learns your study patterns
-* Suggests best time slots for productivity
-* Avoids low-energy periods
+* Detect overlapping events
+* Suggest safe time slots
+
+---
+
+### 📚 Task & Assignment Manager
+
+* Add tasks with deadlines
+* Update status (Pending / Completed)
+* Kanban-style workflow (Streamlit UI)
+
+---
+
+### 🚀 Focus & Pomodoro System
+
+* Start study sessions
+* Track duration + subject
+* Automatic logging into database
+
+---
+
+### 🏆 Gamification System
+
+* Earn XP for focus sessions
+* Level system based on productivity
+* Achievement tracking
 
 ---
 
 ### 📊 Analytics Dashboard
 
-* Total study hours tracking
-* Focus session insights
-* Performance trends
-
----
-
-### 🧩 Task Management (Kanban Board)
-
-* Add tasks and assignments
-* Track status:
-
-  * Pending
-  * In Progress
-  * Completed
-
----
-
-### 🎮 Gamification System
-
-* Earn XP for focus sessions
-* Track streaks
-* Motivation through rewards
-
----
-
-### ⏱️ Focus Tracking (Pomodoro)
-
-* Track study sessions
-* Log focus time automatically
-* Improves discipline and consistency
-
----
-
-### 🎤 Voice Assistant (with fallback)
-
-* Voice → Text → Action
-* Works even if microphone fails (text fallback)
+* Total study time
+* Subject-wise distribution
+* Recent focus sessions
+* Real-time updates
 
 ---
 
 ### 🔔 Notification System
 
 * Email alerts for events
-* Smart reminders
+* Safe fallback if SMTP fails
 
 ---
 
-### 🔗 LMS Integration (Optional)
+### 🎙️ Voice Assistant (Fallback Supported)
 
-* Fetch assignments automatically
-* Supports:
-
-  * Canvas
-  * Moodle
-  * Google Classroom (extendable)
+* Voice → Text → Action
+* Works even if mic fails (manual input fallback)
 
 ---
 
-## 🛠️ Tech Stack
+## 🧠 AI Capabilities
 
-| Component     | Technology          |
-| ------------- | ------------------- |
-| Frontend      | Streamlit           |
-| Backend       | Python              |
-| AI Engine     | Gemini API          |
-| Database      | SQLite              |
-| Calendar API  | Google Calendar API |
-| Notifications | SMTP (Email)        |
+* Gemini Pro Integration
+* Intent parsing (schedule / query)
+* Smart fallback logic (rule-based NLP)
+* Context-aware responses
 
 ---
 
-## 📁 Project Structure
+## 🏗️ System Architecture
 
 ```
-smart-timetable-ai/
-│── track-a/
-│   │── app.py
-│   │── ai_agent.py
-│   │── scheduler_pro.py
-│   │── models.py
-│   │── db.py
-│   │── analytics.py
-│   │── gamification.py
-│   │── voice_module.py
-│   │── lms_sync.py
-│   │── notification_engine.py
-│   │── requirements.txt
+Frontend (Streamlit UI)
 │
-│── track-b/
-│   │── backend/
-│   │── frontend_streamlit/
+├── Dashboard
+├── Calendar View
+├── Task Board
+├── AI Assistant
+├── Voice Interface
 │
-│── .env
-│── .gitignore
-│── README.md
+Backend (Python Modules)
+│
+├── ai_agent.py
+├── scheduler_pro.py
+├── analytics.py
+├── gamification.py
+├── notification_engine.py
+├── voice_module.py
+│
+Database (SQLite)
+│
+├── events
+├── tasks
+├── focus_logs
+├── user_profile
+├── achievements
 ```
 
 ---
 
-## 🧠 Database Schema (Additive)
+## 🗄️ Database Schema
 
-```sql
-CREATE TABLE tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
-    due_date TEXT,
-    status TEXT
-);
+### Events
 
-CREATE TABLE focus_logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    start_time TEXT,
-    duration INTEGER,
-    points INTEGER
-);
+* id, title, start, end
 
-CREATE TABLE user_profile (
-    key TEXT PRIMARY KEY,
-    value TEXT
-);
+### Tasks
 
-CREATE TABLE achievements (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    unlocked INTEGER
-);
-```
+* id, title, due_date, status
+
+### Focus Logs
+
+* id, start_time, duration, points, subject
+
+### User Profile
+
+* key, value
+
+### Achievements
+
+* id, name, unlocked
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Tech Stack
 
-### 🔹 1. Clone Repository
+| Layer         | Technology        |
+| ------------- | ----------------- |
+| Frontend      | Streamlit         |
+| Backend       | Python            |
+| AI            | Google Gemini API |
+| Database      | SQLite            |
+| Data Analysis | Pandas            |
+| Notifications | SMTP              |
+| Voice         | Speech / fallback |
+
+---
+
+## 🛠️ Installation & Setup
+
+### 1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/Ullas204/smart-timetable-ai.git
-cd smart-timetable-ai/track-a
+cd smart-timetable-ai
 ```
 
 ---
 
-### 🔹 2. Install Dependencies
+### 2️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -197,19 +191,19 @@ pip install -r requirements.txt
 
 ---
 
-### 🔹 3. Configure Environment Variables
+### 3️⃣ Set Environment Variables
 
-Create a `.env` file:
+Create `.env` file:
 
 ```
-GEMINI_API_KEY=your_api_key
+GEMINI_API_KEY=your_api_key_here
 EMAIL_USER=your_email
 EMAIL_PASS=your_password
 ```
 
 ---
 
-### 🔹 4. Run Application
+### 4️⃣ Run Application
 
 ```bash
 streamlit run app.py
@@ -217,57 +211,83 @@ streamlit run app.py
 
 ---
 
-## ✅ Functional Checks
+## ▶️ How to Use
 
-* ✔ Calendar loads with events
-* ✔ AI assistant responds
-* ✔ Tasks update in Kanban board
-* ✔ Focus sessions are logged
-* ✔ Dashboard updates dynamically
+### 📅 Add Event
+
+* Go to Calendar tab
+* Enter title, date, time
+* Click “Add Event”
 
 ---
 
-## ⚡ Performance Optimizations
+### 🤖 Use AI Assistant
 
-* Caching using Streamlit
-* Efficient database queries
-* API fallback mechanisms
+* Ask:
+  *“Schedule physics at 6 PM”*
+* AI will create event automatically
+
+---
+
+### 🧠 Start Focus Session
+
+* Choose subject
+* Set duration
+* Start Pomodoro
+* XP gets added automatically
+
+---
+
+### 📊 View Analytics
+
+* Check dashboard
+* View study patterns & progress
+
+---
+
+## 🧪 Test Cases
+
+✔ Add event → appears in calendar
+✔ Start focus → logs saved
+✔ XP updates → level increases
+✔ AI query → returns response
+✔ Tasks → update correctly
 
 ---
 
 ## 🔐 Security
 
-* Environment variables for sensitive data
-* No hardcoded API keys
-* `.env` excluded via `.gitignore`
+* API keys stored in `.env`
+* No hardcoded secrets
+* Safe DB operations
+* Error handling everywhere
 
 ---
 
 ## 🚀 Future Enhancements
 
-* 🌐 Multi-device sync (cloud database)
-* 📱 Mobile app version
-* 🧑‍🤝‍🧑 Collaborative study groups
-* 📚 AI Tutor with PDF-based RAG
-* 🔊 Advanced voice assistant
+* 📱 Mobile App (React Native)
+* ☁️ Cloud DB (PostgreSQL / Supabase)
+* 👥 Group Study Feature
+* 📄 PDF Notes + AI Tutor (RAG)
+* 🔄 Multi-device sync
 
 ---
 
-## 🤝 Contributing
+## 👨‍💻 Author
 
-Contributions are welcome!
-Feel free to fork the repo and submit a pull request.
-
----
-
-## 📜 License
-
-This project is open-source and available under the MIT License.
+**Ullas204**
 
 ---
 
+## ⭐ Final Note
+
+This is a **fully functional AI-powered academic system** — not a demo.
+
+👉 Built with production-level architecture
+👉 Handles real-world failures (API, DB, UI)
+👉 Designed for scalability & extensibility
 
 ---
 
-⭐ If you like this project, give it a star!
-
+💡 *“Plan smarter. Study better. Achieve more.”*
