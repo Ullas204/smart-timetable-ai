@@ -19,11 +19,7 @@ def sync_assignments_to_db():
     count = 0
     for assign in new_assignments:
         if assign["title"] not in existing_tasks:
-<<<<<<< HEAD
-            insert_task(assign["title"], assign["due_date"], priority=2)
-=======
             insert_task(assign["title"], assign["due_date"])
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
             count += 1
             
     return count

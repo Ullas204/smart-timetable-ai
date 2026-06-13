@@ -3,19 +3,10 @@ import os
 from dotenv import load_dotenv
 import json
 import re
-<<<<<<< HEAD
-from datetime import datetime
-
-load_dotenv()
-
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-=======
 from datetime import datetime, timedelta
 
-load_dotenv()
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(_BASE_DIR, '.env'))
 
 GEMINI_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_KEY:
@@ -49,11 +40,22 @@ def fallback_nlp(query):
     if "stats" in query or "analytics" in query:
         return {"action": "stats"}
     
-    if "recommend" in query or "best time" in query:
-        return {"action": "recommend", "subject": "Study"}
+    if "recommend" in query or "best time" in query or "suggest" in query or "study time" in query:
+        subjects = ["Math", "Physics", "Computer Science", "History"]
+        subject = "Study"
+        for s in subjects:
+            if s.lower() in query:
+                subject = s
+                break
+        return {"action": "recommend", "subject": subject}
+
+    known_subjects = ["math", "physics", "computer science", "history", "cs", "ai", "english"]
+    for s in known_subjects:
+        if s in query and ("study" in query or "schedule" in query or "plan" in query):
+            return {"action": "study_plan", "subjects": [s.title()]}
 
     return {"action": "unknown", "response": "I understood your query but I'm in fallback mode. Try 'schedule math' or 'add task homework'."}
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
+
 
 def extract_json(text):
     """Extract JSON from messy AI output"""
@@ -65,19 +67,13 @@ def extract_json(text):
         pass
     return None
 
-<<<<<<< HEAD
 
-def process_query(query):
-    now = datetime.now().isoformat()
-    
-=======
 def process_query(query):
     now = datetime.now().isoformat()
     
     if not GEMINI_KEY:
         return fallback_nlp(query)
     
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
     prompt = f"""
     You are a Smart Academic OS Assistant.
     Current Time: {now}
@@ -115,22 +111,13 @@ def process_query(query):
     """
 
     try:
-<<<<<<< HEAD
-=======
         model = genai.GenerativeModel("gemini-1.5-flash")
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
         response = model.generate_content(prompt)
         text = response.text.strip()
         data = extract_json(text)
         if data:
             return data
     except Exception as e:
-<<<<<<< HEAD
-        print(f"AI Error: {e}")
-
-    return {"action": "unknown"}
-=======
         print(f"AI Error (switching to fallback): {e}")
 
     return fallback_nlp(query)
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)

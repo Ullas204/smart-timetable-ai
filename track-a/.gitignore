@@ -1,20 +1,8 @@
 __pycache__/
+*.pyc
 .env
 token.json
 credentials.json
-*.pyc
-# Python
-__pycache__/
-*.pyc
-
-# Env files
-.env
-
-# Database
 *.db
-
-# OS files
 .DS_Store
-
-# Virtual env
 venv/

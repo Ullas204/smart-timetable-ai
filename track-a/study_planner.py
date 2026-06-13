@@ -2,16 +2,12 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(_BASE_DIR, '.env'))
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-<<<<<<< HEAD
-model = genai.GenerativeModel("gemini-2.5-flash")
 
-
-=======
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
 def generate_study_plan(subjects):
     prompt = f"""
     Create a weekly study timetable for:
@@ -26,11 +22,6 @@ def generate_study_plan(subjects):
     Keep it simple.
     """
 
-<<<<<<< HEAD
-    response = model.generate_content(prompt)
-
-    return response.text
-=======
     try:
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(prompt)
@@ -46,4 +37,3 @@ def generate_study_plan(subjects):
         - **Weekend**:
           - 10:00 - 12:00: Weekly Recap
         """
->>>>>>> 6b82fad (🔥 Fixed DB issues, analytics, gamification, and focus tracking)
