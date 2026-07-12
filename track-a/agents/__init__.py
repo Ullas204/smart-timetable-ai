@@ -1,4 +1,5 @@
-from agents import planner_agent, rescheduler_agent, readiness_agent, wellness_agent, analytics_agent
+from . import planner_agent, rescheduler_agent, readiness_agent, wellness_agent, analytics_agent
+
 
 def get_all_agent_reports():
     return {
@@ -8,6 +9,7 @@ def get_all_agent_reports():
         "wellness": wellness_agent.get_wellness_status(),
         "analytics": analytics_agent.generate_report(),
     }
+
 
 def run_scheduled_agents():
     missed = rescheduler_agent.detect_missed_sessions()

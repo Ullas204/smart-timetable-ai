@@ -1,5 +1,8 @@
 import datetime
+import logging
 from models import fetch_events, fetch_focus_logs
+
+logger = logging.getLogger(__name__)
 
 try:
     from google_calendar import check_conflict
@@ -42,7 +45,7 @@ def detect_missed_sessions():
 
 
 def find_replacement_slot(duration_hours=1, days_ahead=7):
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc)
     for day_offset in range(1, days_ahead + 1):
         for hour in range(8, 22):
             candidate_start = (now + datetime.timedelta(days=day_offset)).replace(
@@ -56,7 +59,8 @@ def find_replacement_slot(duration_hours=1, days_ahead=7):
                 )
                 if not conflict:
                     return candidate_start.isoformat(), candidate_end.isoformat()
-            except:
+            except Exception as e:
+                logger.debug("Slot conflict check failed: %s", e)
                 continue
     return None, None
 

@@ -33,7 +33,8 @@ def get_readiness_score(subject):
 
 
 def get_readiness_summary():
-    subjects = ["Math", "Physics", "Computer Science", "History"]
+    from db import get_subject_names
+    subjects = get_subject_names() or ["Math", "Physics", "Computer Science", "History"]
     scores = {s: get_readiness_score(s) for s in subjects}
     avg = sum(scores.values()) / len(scores) if scores else 0
 

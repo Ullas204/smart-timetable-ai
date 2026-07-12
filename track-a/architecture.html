@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Academic OS — Architecture</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;padding:30px 40px;width:1280px;min-height:720px}
+h1{text-align:center;font-size:28px;font-weight:800;background:linear-gradient(135deg,#38bdf8,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.sub{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+.d{display:flex;flex-direction:column;gap:10px}
+.l{border-radius:12px;padding:14px 18px;border:1px solid rgba(255,255,255,0.08)}
+.ll{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;opacity:.65}
+.r{display:flex;flex-wrap:wrap;gap:8px}
+.b{border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.08);flex:1 1 auto;min-width:100px}
+.b .s{font-size:10px;font-weight:400;opacity:.55;display:block;margin-top:2px}
+.a{text-align:center;color:rgba(255,255,255,0.2);font-size:16px;line-height:1}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.col{display:flex;flex-direction:column;gap:10px;flex:1}
+
+/* Colors */
+.c1{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}.c1 .ll{color:#38bdf8}.c1 .b{background:rgba(56,189,248,0.1);color:#7dd3fc;border-color:rgba(56,189,248,0.22)}
+.c2{background:rgba(167,139,250,0.06);border-color:rgba(167,139,250,0.2)}.c2 .ll{color:#a78bfa}.c2 .b{background:rgba(167,139,250,0.1);color:#c4b5fd;border-color:rgba(167,139,250,0.22)}.c2 .b.m{background:rgba(167,139,250,0.18);border-color:rgba(167,139,250,0.4);min-width:300px}
+.c3{background:rgba(52,211,153,0.05);border-color:rgba(52,211,153,0.18)}.c3 .ll{color:#34d399}.c3 .b{background:rgba(52,211,153,0.08);color:#6ee7b7;border-color:rgba(52,211,153,0.2)}
+.c4{background:rgba(251,191,36,0.05);border-color:rgba(251,191,36,0.18)}.c4 .ll{color:#fbbf24}.c4 .b{background:rgba(251,191,36,0.08);color:#fde68a;border-color:rgba(251,191,36,0.2)}
+.c5{background:rgba(244,114,182,0.05);border-color:rgba(244,114,182,0.18)}.c5 .ll{color:#f472b6}.c5 .b{background:rgba(244,114,182,0.08);color:#f9a8d4;border-color:rgba(244,114,182,0.2)}
+.c6{background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.18)}.c6 .ll{color:#f87171}.c6 .b{background:rgba(239,68,68,0.08);color:#fca5a5;border-color:rgba(239,68,68,0.2)}
+.arrow{color:rgba(255,255,255,0.2);font-size:14px}
+.ft{text-align:center;margin-top:16px;color:#334155;font-size:11px}
+</style>
+</head>
+<body>
+
+<h1>Smart Academic OS</h1>
+<p class="sub">System Architecture &mdash; LangChain RAG + Tool Calling Agent</p>
+
+<div class="d">
+
+  <!-- UI -->
+  <div class="l c1">
+    <div class="ll">Presentation Layer &mdash; Streamlit UI</div>
+    <div class="r">
+      <div class="b">Dashboard<span class="s">Pomodoro, Widgets</span></div>
+      <div class="b">Calendar<span class="s">Google Sync</span></div>
+      <div class="b">Kanban Tasks<span class="s">Pending / Done</span></div>
+      <div class="b">AI Assistant<span class="s">Chat + RAG</span></div>
+      <div class="b">Knowledge Base<span class="s">Upload & Search</span></div>
+      <div class="b">Analytics<span class="s">Charts</span></div>
+      <div class="b">Voice<span class="s">Commands</span></div>
+      <div class="b">Settings<span class="s">Profile</span></div>
+    </div>
+  </div>
+
+  <div class="a">&darr;</div>
+
+  <!-- AGENT -->
+  <div class="l c2">
+    <div class="ll">Core Agent &mdash; LangChain</div>
+    <div class="r" style="justify-content:center">
+      <div class="b m">AcademicAgent &mdash; agent_executor.py<span class="s">Query Router &bull; Tool Dispatcher &bull; Response Parser &bull; Direct | Tool Call | RAG | Combined</span></div>
+    </div>
+    <div class="r" style="margin-top:8px;justify-content:center">
+      <div class="b">ChatMemory<span class="s">Session History</span></div>
+      <div class="b">System Prompt<span class="s">Persona & Decision</span></div>
+      <div class="b">Gemini LLM<span class="s">2.0 Flash</span></div>
+      <div class="b">Injection Guard<span class="s">Input Sanitize</span></div>
+      <div class="b">Response Cache<span class="s">5-min LRU</span></div>
+    </div>
+  </div>
+
+  <div class="a">&darr;</div>
+
+  <!-- TOOLS + RAG + AGENTS -->
+  <div class="row">
+
+    <!-- TOOLS -->
+    <div class="l c3">
+      <div class="ll">Tool Registry &mdash; 20+ LangChain Tools</div>
+      <div class="r" style="flex-direction:column;gap:6px">
+        <div class="r"><div class="b">Calendar<span class="s">create, list, find, resolve</span></div><div class="b">Tasks<span class="s">create, list, update</span></div><div class="b">Study Plan<span class="s">generate, workload</span></div></div>
+        <div class="r"><div class="b">Reschedule<span class="s">detect, auto-fix</span></div><div class="b">Readiness<span class="s">exam check</span></div><div class="b">Wellness<span class="s">health status</span></div></div>
+        <div class="r"><div class="b">Analytics<span class="s">productivity, streak</span></div><div class="b">RAG Search<span class="s">search_kb, kb_status</span></div><div class="b">Focus<span class="s">pomodoro, gamify</span></div></div>
+        <div class="r"><div class="b">Email<span class="s">send notification</span></div><div class="b">Attendance<span class="s">mark, view</span></div><div class="b">Voice<span class="s">process command</span></div><div class="b">Profile<span class="s">get, update</span></div></div>
+      </div>
+    </div>
+
+    <!-- RAG + AGENTS -->
+    <div class="col">
+
+      <!-- RAG -->
+      <div class="l c4">
+        <div class="ll">RAG Pipeline &mdash; core/rag/</div>
+        <div class="r" style="align-items:center;justify-content:center;gap:6px">
+          <div class="b">Load PDF/TXT/DOCX<span class="s">pypdf, docx2txt</span></div>
+          <span class="arrow">&rarr;</span>
+          <div class="b">Chunk 1000 tok<span class="s">RecursiveTextSplitter</span></div>
+          <span class="arrow">&rarr;</span>
+          <div class="b">Embed<span class="s">bge-small-en-v1.5</span></div>
+          <span class="arrow">&rarr;</span>
+          <div class="b">FAISS Store<span class="s">472 vectors, 384-dim</span></div>
+        </div>
+      </div>
+
+      <!-- DOMAIN AGENTS -->
+      <div class="l c5">
+        <div class="ll">Domain Agents &mdash; agents/</div>
+        <div class="r">
+          <div class="b">Planner<span class="s">Study Plans</span></div>
+          <div class="b">Rescheduler<span class="s">Conflict Fix</span></div>
+          <div class="b">Readiness<span class="s">Exam Prep</span></div>
+          <div class="b">Wellness<span class="s">Health Check</span></div>
+          <div class="b">Analytics<span class="s">Insights</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="a">&darr;</div>
+
+  <!-- DATA + APIs -->
+  <div class="l c6">
+    <div class="ll">Data Layer + External APIs</div>
+    <div class="r" style="justify-content:center">
+      <div class="b">SQLite DB<span class="s">tasks, events, docs, analytics</span></div>
+      <div class="b">FAISS Index<span class="s">index.faiss + index.pkl</span></div>
+      <div class="b">File System<span class="s">knowledge_base/, faiss_index/</span></div>
+      <div class="b">Gemini API<span class="s">LLM Engine</span></div>
+      <div class="b">Google Calendar<span class="s">OAuth2 Sync</span></div>
+      <div class="b">SMTP / Gmail<span class="s">Email Alerts</span></div>
+      <div class="b">HuggingFace Hub<span class="s">Model Download</span></div>
+    </div>
+  </div>
+
+</div>
+
+<p class="ft">Smart Academic OS &bull; LangChain + Streamlit + Google Gemini + FAISS + HuggingFace</p>
+
+</body>
+</html>

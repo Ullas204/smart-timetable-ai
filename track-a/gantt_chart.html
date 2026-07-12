@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Academic OS — Final Project Timeline</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --bg:#0b1120;--bg2:#111827;--bg3:#1e293b;
+    --text:#f1f5f9;--muted:#94a3b8;--border:#1e293b;
+    --blue:#3b82f6;--indigo:#6366f1;--purple:#8b5cf6;
+    --teal:#14b8a6;--green:#22c55e;--emerald:#10b981;
+    --orange:#f59e0b;--amber:#d97706;--red:#ef4444;--rose:#f43f5e;
+    --cyan:#06b6d4;--pink:#ec4899;
+  }
+
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:linear-gradient(135deg,var(--bg) 0%,#0f172a 50%,var(--bg2) 100%);
+    color:var(--text);min-height:100vh;overflow-x:hidden;
+  }
+
+  .page{max-width:1400px;margin:0 auto;padding:28px 24px 40px}
+
+  /* ── HEADER ─────────────────────────────── */
+  .header{text-align:center;margin-bottom:32px;position:relative}
+  .header::after{content:'';display:block;width:120px;height:3px;
+    background:linear-gradient(90deg,var(--blue),var(--purple),var(--teal));
+    margin:16px auto 0;border-radius:2px}
+  .header h1{font-size:2rem;font-weight:800;
+    background:linear-gradient(135deg,#60a5fa,#a78bfa,#34d399);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;letter-spacing:-0.5px}
+  .header .sub{color:var(--muted);font-size:.85rem;margin-top:6px;
+    letter-spacing:3px;text-transform:uppercase;font-weight:500}
+  .header .dates{color:var(--muted);font-size:.78rem;margin-top:4px;opacity:.7}
+
+  /* ── STATS ROW ──────────────────────────── */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;margin-bottom:28px}
+  .stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+    border-radius:12px;padding:14px 16px;text-align:center;
+    transition:transform .2s,box-shadow .2s}
+  .stat:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .stat .num{font-size:1.6rem;font-weight:800;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .stat .lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;
+    letter-spacing:1.5px;margin-top:2px;font-weight:500}
+
+  /* ── LEGEND ─────────────────────────────── */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px}
+  .leg{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted);
+    background:rgba(255,255,255,.03);padding:5px 12px;border-radius:20px;
+    border:1px solid rgba(255,255,255,.06)}
+  .leg .dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+  /* ── MONTH SECTION ──────────────────────── */
+  .month-section{margin-bottom:28px}
+  .month-label{font-size:.72rem;font-weight:700;letter-spacing:2.5px;
+    text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+    padding-left:4px;display:flex;align-items:center;gap:8px}
+  .month-label::after{content:'';flex:1;height:1px;
+    background:linear-gradient(90deg,rgba(255,255,255,.1),transparent)}
+
+  /* ── GANTT CHART ────────────────────────── */
+  .gantt{position:relative;width:100%;overflow-x:auto}
+
+  .gantt-grid{display:grid;
+    grid-template-columns:240px 1fr;
+    min-width:900px}
+
+  /* header row */
+  .gantt-header{display:contents}
+  .gantt-header .task-label{font-size:.65rem;color:var(--muted);
+    text-transform:uppercase;letter-spacing:1.5px;font-weight:600;
+    padding:6px 12px;border-bottom:1px solid var(--border);
+    background:var(--bg2);position:sticky;left:0;z-index:2}
+  .gantt-header .weeks{display:grid;grid-template-columns:repeat(4,1fr);
+    border-bottom:1px solid var(--border);background:var(--bg2)}
+  .week-hdr{text-align:center;font-size:.6rem;color:var(--muted);
+    padding:6px 2px;border-left:1px solid rgba(255,255,255,.04);font-weight:500}
+  .week-hdr .wk{font-weight:700;color:var(--text);font-size:.68rem}
+  .week-hdr .dt{font-size:.55rem;opacity:.6;margin-top:1px}
+
+  /* task rows */
+  .gantt-row{display:contents}
+  .gantt-row .task-label{padding:7px 12px;font-size:.75rem;font-weight:500;
+    border-bottom:1px solid rgba(255,255,255,.03);display:flex;
+    flex-direction:column;justify-content:center;background:var(--bg);
+    position:sticky;left:0;z-index:1;min-width:240px}
+  .gantt-row .task-label .tname{color:var(--text);font-weight:600;font-size:.78rem}
+  .gantt-row .task-label .tdesc{color:var(--muted);font-size:.6rem;margin-top:1px;
+    line-height:1.3}
+  .gantt-row .bar-area{display:grid;grid-template-columns:repeat(4,1fr);
+    border-bottom:1px solid rgba(255,255,255,.03);position:relative;
+    align-items:center;padding:4px 0}
+  .bar-area .wk-cell{border-left:1px solid rgba(255,255,255,.03);height:100%;
+    position:relative}
+
+  /* the actual bars */
+  .bar{position:absolute;height:26px;border-radius:5px;top:50%;
+    transform:translateY(-50%);opacity:0;animation:slideIn .6s ease forwards;
+    box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:default;transition:filter .2s;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.55rem;font-weight:600;color:rgba(255,255,255,.9);
+    text-shadow:0 1px 2px rgba(0,0,0,.4);overflow:hidden;white-space:nowrap;
+    padding:0 6px}
+  .bar:hover{filter:brightness(1.25);box-shadow:0 4px 16px rgba(0,0,0,.5)}
+
+  @keyframes slideIn{
+    from{opacity:0;transform:translateY(-50%) scaleX(0)}
+    to{opacity:1;transform:translateY(-50%) scaleX(1)}
+  }
+
+  /* milestone diamond */
+  .milestone{position:absolute;top:50%;transform:translate(-50%,-50%) rotate(45deg);
+    width:12px;height:12px;background:var(--orange);z-index:3;
+    box-shadow:0 0 10px rgba(245,158,11,.5);animation:pulse 2s infinite}
+  .milestone::after{content:attr(data-label);position:absolute;top:18px;
+    left:50%;transform:translateX(-50%) rotate(-45deg);white-space:nowrap;
+    font-size:.55rem;font-weight:700;color:var(--orange);letter-spacing:.5px}
+  @keyframes pulse{0%,100%{box-shadow:0 0 8px rgba(245,158,11,.4)}
+    50%{box-shadow:0 0 18px rgba(245,158,11,.8)}}
+
+  /* ── COMPLETION BADGE ───────────────────── */
+  .completed{position:relative}
+  .completed::after{content:'✓';position:absolute;right:8px;top:50%;
+    transform:translateY(-50%);font-size:.6rem;color:var(--green);
+    background:rgba(34,197,94,.15);width:16px;height:16px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(34,197,94,.3)}
+
+  /* ── PHASE SUMMARY ──────────────────────── */
+  .phase-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:14px;margin-top:32px}
+  .phase-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);
+    border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;
+    transition:transform .2s}
+  .phase-card:hover{transform:translateY(-2px)}
+  .phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+  .phase-card.blue::before{background:linear-gradient(90deg,var(--blue),var(--indigo))}
+  .phase-card.purple::before{background:linear-gradient(90deg,var(--purple),var(--pink))}
+  .phase-card.green::before{background:linear-gradient(90deg,var(--green),var(--emerald))}
+  .phase-card.orange::before{background:linear-gradient(90deg,var(--orange),var(--red))}
+  .phase-card h3{font-size:.82rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+  .phase-card .pc-period{font-size:.62rem;color:var(--muted);margin-bottom:8px;
+    text-transform:uppercase;letter-spacing:1px}
+  .phase-card ul{list-style:none;padding:0}
+  .phase-card li{font-size:.7rem;color:var(--muted);padding:2px 0;
+    padding-left:14px;position:relative;line-height:1.5}
+  .phase-card li::before{content:'✓';position:absolute;left:0;color:var(--green);
+    font-weight:700;font-size:.6rem}
+
+  /* ── FOOTER ─────────────────────────────── */
+  footer{text-align:center;margin-top:36px;padding-top:20px;
+    border-top:1px solid rgba(255,255,255,.06)}
+  footer p{font-size:.65rem;color:var(--muted);letter-spacing:1px}
+
+  /* ── RESPONSIVE ─────────────────────────── */
+  @media(max-width:768px){
+    .page{padding:16px 12px 24px}
+    .header h1{font-size:1.4rem}
+    .stats{grid-template-columns:repeat(3,1fr)}
+    .gantt-grid{grid-template-columns:160px 1fr;min-width:600px}
+    .gantt-row .task-label{min-width:160px;padding:5px 8px}
+    .gantt-row .task-label .tname{font-size:.68rem}
+  }
+
+  /* ── PRINT ──────────────────────────────── */
+  @media print{
+    body{background:#fff!important;color:#111!important}
+    .bar{print-color-adjust:exact;-webkit-print-color-adjust:exact;animation:none!important;opacity:1!important}
+    .milestone{animation:none!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+    .stat,.phase-card,.leg{border-color:#ddd;background:#f9f9f9}
+    .stat .num{-webkit-text-fill-color:#111!important;background:none!important}
+    .header h1{-webkit-text-fill-color:#111!important;background:none!important}
+    .gantt-row .task-label{background:#fff!important}
+    .gantt-header .task-label,.gantt-header .weeks{background:#f3f4f6!important}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Smart Academic OS</h1>
+    <div class="sub">Final Project Timeline — 2-Month Delivery</div>
+    <div class="dates">May 12, 2026 → July 11, 2026 &nbsp;|&nbsp; 8 Weeks &nbsp;|&nbsp; 4 Phases &nbsp;|&nbsp; 34 Tasks Completed</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="num">37</div><div class="lbl">LangChain Tools</div></div>
+    <div class="stat"><div class="num">40</div><div class="lbl">Automated Tests</div></div>
+    <div class="stat"><div class="num">8</div><div class="lbl">Technical Docs</div></div>
+    <div class="stat"><div class="num">14</div><div class="lbl">Tool Groups</div></div>
+    <div class="stat"><div class="num">4</div><div class="lbl">AI Agent Modes</div></div>
+    <div class="stat"><div class="num">100%</div><div class="lbl">Tests Passing</div></div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg"><span class="dot" style="background:var(--blue)"></span>Phase 1 — Foundation</div>
+    <div class="leg"><span class="dot" style="background:var(--purple)"></span>Phase 2 — AI & RAG</div>
+    <div class="leg"><span class="dot" style="background:var(--green)"></span>Phase 3 — Quality & Docs</div>
+    <div class="leg"><span class="dot" style="background:var(--orange)"></span>Phase 4 — Hardening & Deploy</div>
+    <div class="leg"><span class="dot" style="background:var(--rose)"></span>Milestone</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ MONTH 1 -->
+  <div class="month-section">
+    <div class="month-label">Month 1 — May 12 → Jun 8 &nbsp; Foundation & Core Development</div>
+    <div class="gantt">
+      <div class="gantt-grid" id="grid1"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ MONTH 2 -->
+  <div class="month-section">
+    <div class="month-label">Month 2 — Jun 9 → Jul 11 &nbsp; Quality, Security & Deployment</div>
+    <div class="gantt">
+      <div class="gantt-grid" id="grid2"></div>
+    </div>
+  </div>
+
+  <!-- PHASE SUMMARY CARDS -->
+  <div class="phase-cards">
+    <div class="phase-card blue">
+      <h3>Phase 1 — Foundation & Architecture</h3>
+      <div class="pc-period">Week 1–2 &nbsp;·&nbsp; May 12 – May 25</div>
+      <ul>
+        <li>SQLite schema with 7 tables, CRUD operations</li>
+        <li>Streamlit UI framework with sidebar navigation & theming</li>
+        <li>Gamification engine — XP, levels, streaks, 20+ achievements</li>
+        <li>Calendar integration — events, conflict detection</li>
+        <li>Study planner, task manager, focus timer (Pomodoro)</li>
+        <li>Profile management, notifications, analytics dashboard</li>
+      </ul>
+    </div>
+    <div class="phase-card purple">
+      <h3>Phase 2 — AI Agent & RAG Pipeline</h3>
+      <div class="pc-period">Week 3–4 &nbsp;·&nbsp; May 26 – Jun 8</div>
+      <ul>
+        <li>LangChain agent with Gemini 2.0 Flash — 37 tools, 14 groups</li>
+        <li>4-mode decision framework — DIRECT, TOOLS, CONVERSATIONAL, HYBRID</li>
+        <li>RAG pipeline — document processing, chunking, FAISS vector store</li>
+        <li>Google text embeddings & similarity search retrieval</li>
+        <li>Knowledge Base — upload PDF/TXT/DOCX, search, status, clear</li>
+        <li>Voice I/O, email notifications, Google Calendar API sync</li>
+        <li>Rescheduler, readiness scorer, wellness, analytics agents</li>
+      </ul>
+    </div>
+    <div class="phase-card green">
+      <h3>Phase 3 — Quality & Documentation</h3>
+      <div class="pc-period">Week 5–6 &nbsp;·&nbsp; Jun 9 – Jun 22</div>
+      <ul>
+        <li>40 automated tests — unit, integration, RAG pipeline, security</li>
+        <li>8 technical docs — architecture, workflow, tools, DB, deployment</li>
+        <li>Demo & viva preparation guide with 25+ Q&A pairs</li>
+        <li>Structured logging with AcademicFormatter (color + file output)</li>
+        <li>FallbackMemory for offline operation</li>
+        <li>Zero bare except clauses — all errors captured with context</li>
+      </ul>
+    </div>
+    <div class="phase-card orange">
+      <h3>Phase 4 — Hardening & Deployment</h3>
+      <div class="pc-period">Week 7–8 &nbsp;·&nbsp; Jun 23 – Jul 11</div>
+      <ul>
+        <li>Prompt injection guard — 13 regex patterns across agent & RAG</li>
+        <li>Input validation — string sanitization, email regex, status whitelists</li>
+        <li>File content validation — EXE detection, PDF header, encoding checks</li>
+        <li>LLM response cache — 5-min TTL, 50-entry LRU</li>
+        <li>DB connection pooling — WAL mode, foreign keys, context manager</li>
+        <li>Admin debug panel with system status & tool execution log</li>
+        <li>PDF loader fix — direct pypdf integration, vendor bundling</li>
+        <li>Embedding model upgrade — Gemini Embedding 2 Preview</li>
+        <li>Streamlit deprecation fixes, HuggingFace deployment config</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p>SMART ACADEMIC OS &nbsp;·&nbsp; CAPSTONE PROJECT &nbsp;·&nbsp; 2-MONTH DELIVERY &nbsp;·&nbsp; JULY 2026</p>
+  </footer>
+
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────
+const MONTH1_TASKS = [
+  // [name, desc, startWeek(0-3), spanWeeks, color, milestone?]
+  ["Requirements & Planning", "Problem analysis, tech stack (Streamlit + LangChain + Gemini), architecture", 0, 1, "#3b82f6"],
+  ["Database Design & Setup", "SQLite schema (7 tables), CRUD, XP/level model, triggers", 0, 1.2, "#3b82f6"],
+  ["Core UI Framework", "Streamlit dashboard, sidebar nav, dark theme, responsive layout", 0.2, 1.3, "#3b82f6"],
+  ["Gamification System", "XP engine, level progression, 20+ achievements, streak tracking", 0.8, 1.5, "#06b6d4"],
+  ["Calendar & Scheduling", "Event CRUD, conflict detection, study scheduling, Google Cal sync", 1, 1.5, "#06b6d4"],
+  ["Task & Study Manager", "Task CRUD, priority/status filters, Pomodoro timer, analytics", 1.2, 1.3, "#06b6d4"],
+  ["Profile & Notifications", "Student profile, email alerts, achievement popups", 1.5, 1, "#06b6d4"],
+  ["AI Agent Architecture", "LangChain + Gemini 2.0 Flash, 4-mode workflow, 37 tools", 1.8, 2, "#8b5cf6"],
+  ["RAG Pipeline", "Document processor, chunking, embeddings, FAISS vector store", 2.2, 1.8, "#8b5cf6"],
+  ["Knowledge Base Tools", "Upload, process, search, status, clear — 5 tools", 2.8, 1.2, "#8b5cf6"],
+  ["Specialist Agents", "Rescheduler, readiness, wellness, analytics, planner agents", 2.5, 1.5, "#8b5cf6"],
+  ["Voice & Email Tools", "Speech I/O, SMTP email, Google Calendar API integration", 3, 1, "#8b5cf6"],
+  // milestone
+  ["", "", 1.95, 0, "#f43f5e", "Core MVP"],
+];
+
+const MONTH2_TASKS = [
+  ["Testing Framework", "40 automated tests — unit, integration, RAG, security, DB", 0, 1.5, "#22c55e"],
+  ["Documentation Suite", "8 docs — architecture, workflow, tools, DB, deployment, user manual", 0, 1.5, "#22c55e"],
+  ["Logging & Monitoring", "Structured logging, AcademicFormatter, admin debug panel", 0.3, 1.2, "#22c55e"],
+  ["Demo & Viva Prep", "Demo script, 25+ viva Q&A, presentation guide", 0.8, 1, "#22c55e"],
+  ["Security Hardening", "Prompt injection guard (13 patterns), input validation, file sanitization", 1.2, 2, "#f59e0b"],
+  ["Performance Optimization", "LLM cache (5min TTL/50-LRU), DB pooling, WAL mode, connection ctx mgr", 1.5, 1.8, "#f59e0b"],
+  ["AI Quality Improvements", "Enhanced system prompt, confidence citations, history limit, query sanitization", 2, 1.5, "#f59e0b"],
+  ["Bug Fixes & Edge Cases", "Bare except removal, indentation fixes, error context, dynamic subjects", 2.2, 1.5, "#ef4444"],
+  ["PDF & Embedding Fix", "Direct pypdf loader, vendor bundling, Gemini Embedding 2 Preview upgrade", 2.8, 1.2, "#ef4444"],
+  ["Deployment & Launch", "HuggingFace config, Streamlit deprecation fixes, final verification", 3, 1, "#ef4444"],
+  // milestones
+  ["", "", 1.95, 0, "#f43f5e", "Enterprise Ready"],
+  ["", "", 3.95, 0, "#f43f5e", "Launch"],
+];
+
+// ── Render ──────────────────────────────────────────────
+const WEEK_LABELS = [
+  ["Week 1","May 12"],["Week 2","May 19"],["Week 3","May 26"],["Week 4","Jun 2"],
+  ["Week 5","Jun 9"],["Week 6","Jun 16"],["Week 7","Jun 23"],["Week 8","Jun 30"]
+];
+
+function renderGrid(containerId, tasks, weekOffset) {
+  const grid = document.getElementById(containerId);
+  // header
+  const hdrLabel = document.createElement('div');
+  hdrLabel.className = 'gantt-header';
+  hdrLabel.innerHTML = `<div class="task-label">TASK</div>
+    <div class="weeks">${[0,1,2,3].map(i => {
+      const w = WEEK_LABELS[weekOffset + i];
+      return `<div class="week-hdr"><div class="wk">${w[0]}</div><div class="dt">${w[1]}</div></div>`;
+    }).join('')}</div>`;
+  grid.appendChild(hdrLabel);
+
+  let delay = 0;
+  tasks.forEach(t => {
+    const [name, desc, start, span, color, milestone] = t;
+    const row = document.createElement('div');
+    row.className = 'gantt-row';
+
+    // task label
+    const label = document.createElement('div');
+    label.className = 'task-label';
+    if (milestone) {
+      label.innerHTML = `<span class="tname" style="color:${color}">⬥ ${milestone}</span><span class="tdesc">Milestone</span>`;
+    } else {
+      label.innerHTML = `<span class="tname">${name}</span><span class="tdesc">${desc}</span>`;
+    }
+
+    // bar area
+    const barArea = document.createElement('div');
+    barArea.className = 'bar-area';
+
+    if (milestone) {
+      // milestone diamond at position
+      const pct = (start / 4) * 100;
+      barArea.innerHTML = `<div class="milestone" style="left:${pct}%" data-label="${milestone}"></div>`;
+    } else {
+      // 4 week cells
+      for (let i = 0; i < 4; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'wk-cell';
+        barArea.appendChild(cell);
+      }
+      // bar
+      const bar = document.createElement('div');
+      bar.className = 'bar completed';
+      const leftPct = (start / 4) * 100;
+      const widthPct = (span / 4) * 100;
+      bar.style.left = leftPct + '%';
+      bar.style.width = widthPct + '%';
+      bar.style.background = `linear-gradient(135deg, ${color}, ${color}dd)`;
+      bar.style.animationDelay = (delay * 0.07) + 's';
+      bar.style.transformOrigin = 'left center';
+      bar.textContent = name.length < 25 ? name : '';
+      barArea.appendChild(bar);
+    }
+
+    row.appendChild(label);
+    row.appendChild(barArea);
+    grid.appendChild(row);
+    delay++;
+  });
+}
+
+renderGrid('grid1', MONTH1_TASKS, 0);
+renderGrid('grid2', MONTH2_TASKS, 4);
+</script>
+</body>
+</html>
