@@ -1,293 +1,154 @@
-# 🎓 Smart Academic OS (Next-Gen Smart Timetable AI)
+# 🎓 Smart Academic OS
 
-An **AI-powered academic productivity system** that helps students manage schedules, optimize study time, and stay consistent using intelligent automation, analytics, and gamification.
-
----
-
-## 🚀 Project Overview
-
-**Smart Academic OS** is an upgraded version of the Smart Timetable Assistant.
-
-It combines:
-
-* 📅 Smart Scheduling
-* 🤖 AI Assistant
-* 📊 Productivity Analytics
-* 🎯 Focus Tracking
-* 🏆 Gamification
-
-👉 All in one unified system.
+An AI-powered academic assistant that unifies scheduling, task management, study planning, and knowledge management into a single intelligent interface using **LangChain**, **Google Gemini**, and **FAISS**.
 
 ---
 
-## ✨ Core Features
+## 🚀 Features
 
-### 📅 Smart Calendar System
-
-* Add & view events
-* Real-time event tracking
-* Conflict-safe scheduling
-* SQLite-based persistence
-
----
-
-### 🤖 AI Scheduling Assistant
-
-* Natural language input
-  *Example: “Schedule math at 5 PM”*
-* Gemini API integration
-* ⚡ Fallback NLP if API fails (NO BREAKAGE)
+- **RAG-Powered Knowledge Base** — Upload PDFs, TXT, DOCX files and get grounded, source-cited answers using `BAAI/bge-small-en-v1.5` embeddings + FAISS vector search
+- **20+ LangChain Tools** — Calendar, tasks, study planning, exam readiness, wellness tracking, analytics, notifications, and more
+- **5 Domain AI Agents** — Planner, Rescheduler, Readiness, Wellness, and Analytics agents
+- **Zero-shot ReAct Pattern** — Agent autonomously decides which tools to call per query
+- **4 Execution Modes** — Direct Answer, Tool Call, RAG Search, Combined
+- **Fallback Intelligence** — Knowledge base stays accessible even when LLM is unavailable
+- **Conversation Memory** — Session-scoped chat history for context-aware responses
+- **Prompt Injection Protection** — Input sanitization and safety guards
+- **Gamification** — XP system, levels, and achievements
+- **Voice Commands** — Voice-controlled academic assistance
+- **Google Calendar Sync** — OAuth2 integration for event synchronization
 
 ---
 
-### ⚠️ Conflict Detection
-
-* Detect overlapping events
-* Suggest safe time slots
-
----
-
-### 📚 Task & Assignment Manager
-
-* Add tasks with deadlines
-* Update status (Pending / Completed)
-* Kanban-style workflow (Streamlit UI)
-
----
-
-### 🚀 Focus & Pomodoro System
-
-* Start study sessions
-* Track duration + subject
-* Automatic logging into database
-
----
-
-### 🏆 Gamification System
-
-* Earn XP for focus sessions
-* Level system based on productivity
-* Achievement tracking
-
----
-
-### 📊 Analytics Dashboard
-
-* Total study time
-* Subject-wise distribution
-* Recent focus sessions
-* Real-time updates
-
----
-
-### 🔔 Notification System
-
-* Email alerts for events
-* Safe fallback if SMTP fails
-
----
-
-### 🎙️ Voice Assistant (Fallback Supported)
-
-* Voice → Text → Action
-* Works even if mic fails (manual input fallback)
-
----
-
-## 🧠 AI Capabilities
-
-* Gemini Pro Integration
-* Intent parsing (schedule / query)
-* Smart fallback logic (rule-based NLP)
-* Context-aware responses
-
----
-
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
 ```
-Frontend (Streamlit UI)
-│
-├── Dashboard
-├── Calendar View
-├── Task Board
-├── AI Assistant
-├── Voice Interface
-│
-Backend (Python Modules)
-│
-├── ai_agent.py
-├── scheduler_pro.py
-├── analytics.py
-├── gamification.py
-├── notification_engine.py
-├── voice_module.py
-│
-Database (SQLite)
-│
-├── events
-├── tasks
-├── focus_logs
-├── user_profile
-├── achievements
+UI (Streamlit)
+    ↓
+AcademicAgent (agent_executor.py)
+    ↓
+┌────────────┬────────────┬────────────┐
+│   Tools    │  RAG Pipeline │  Domain   │
+│  (20+)     │  bge-small   │  Agents   │
+│            │  → FAISS     │  (5)      │
+└────────────┴────────────┴────────────┘
+    ↓
+SQLite + FAISS + External APIs (Gemini, GCal, SMTP)
 ```
 
 ---
 
-## 🗄️ Database Schema
+## 🛠️ Tech Stack
 
-### Events
-
-* id, title, start, end
-
-### Tasks
-
-* id, title, due_date, status
-
-### Focus Logs
-
-* id, start_time, duration, points, subject
-
-### User Profile
-
-* key, value
-
-### Achievements
-
-* id, name, unlocked
+| Component | Technology |
+|---|---|
+| Framework | LangChain + Streamlit |
+| LLM | Google Gemini 2.0 Flash |
+| Embeddings | BAAI/bge-small-en-v1.5 |
+| Vector DB | FAISS |
+| Database | SQLite3 |
+| Hosting | Local / Hugging Face Spaces |
 
 ---
 
-## ⚙️ Tech Stack
+## 📁 Project Structure
 
-| Layer         | Technology        |
-| ------------- | ----------------- |
-| Frontend      | Streamlit         |
-| Backend       | Python            |
-| AI            | Google Gemini API |
-| Database      | SQLite            |
-| Data Analysis | Pandas            |
-| Notifications | SMTP              |
-| Voice         | Speech / fallback |
+```
+track-a/
+├── app.py                  # Streamlit entry point
+├── core/
+│   ├── agent_executor.py   # AcademicAgent (main LangChain module)
+│   ├── config.py           # Centralized settings
+│   ├── llm.py              # Shared Gemini LLM singleton
+│   ├── memory.py           # Conversation memory
+│   ├── schemas.py          # Pydantic schemas
+│   ├── rag/                # RAG pipeline
+│   │   ├── config.py       # RAG constants
+│   │   ├── document_processor.py
+│   │   ├── vector_store.py # FAISS + Embeddings
+│   │   └── pipeline.py     # Search + Answer
+│   └── tools/              # 20+ LangChain tools
+├── agents/                 # Domain sub-agents
+├── docs/                   # Documentation
+├── requirements.txt
+└── .env                    # Secrets (not committed)
+```
 
 ---
 
-## 🛠️ Installation & Setup
+## ⚡ Quick Start
 
-### 1️⃣ Clone Repository
-
+### 1. Clone the repository
 ```bash
 git clone https://github.com/Ullas204/smart-timetable-ai.git
-cd smart-timetable-ai
+cd smart-timetable-ai/track-a
 ```
 
----
-
-### 2️⃣ Install Dependencies
-
+### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-### 3️⃣ Set Environment Variables
-
-Create `.env` file:
-
+### 3. Set up environment
+Create a `.env` file in `track-a/`:
 ```
-GEMINI_API_KEY=your_api_key_here
-EMAIL_USER=your_email
-EMAIL_PASS=your_password
+GEMINI_API_KEY=your_google_gemini_api_key
+EMAIL=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
 ```
 
----
-
-### 4️⃣ Run Application
-
+### 4. Run the app
 ```bash
 streamlit run app.py
 ```
 
 ---
 
-## ▶️ How to Use
+## 🔑 Required Secrets
 
-### 📅 Add Event
-
-* Go to Calendar tab
-* Enter title, date, time
-* Click “Add Event”
-
----
-
-### 🤖 Use AI Assistant
-
-* Ask:
-  *“Schedule physics at 6 PM”*
-* AI will create event automatically
+| Secret | Description |
+|---|---|
+| `GEMINI_API_KEY` | Google Gemini API key ([Get one here](https://ai.google.dev/)) |
+| `EMAIL` | Gmail address for notifications |
+| `EMAIL_PASSWORD` | Gmail app password |
 
 ---
 
-### 🧠 Start Focus Session
+## 📦 Dependencies
 
-* Choose subject
-* Set duration
-* Start Pomodoro
-* XP gets added automatically
-
----
-
-### 📊 View Analytics
-
-* Check dashboard
-* View study patterns & progress
+- `langchain`, `langchain-core`, `langchain-community`
+- `langchain-google-genai`, `langchain-huggingface`
+- `sentence-transformers`, `faiss-cpu`
+- `streamlit`, `streamlit-calendar`
+- `pypdf`, `docx2txt`
+- `google-generativeai`, `google-api-python-client`
 
 ---
 
-## 🧪 Test Cases
+## 🧪 Testing
 
-✔ Add event → appears in calendar
-✔ Start focus → logs saved
-✔ XP updates → level increases
-✔ AI query → returns response
-✔ Tasks → update correctly
+```bash
+pytest tests.py -v
+```
 
----
-
-## 🔐 Security
-
-* API keys stored in `.env`
-* No hardcoded secrets
-* Safe DB operations
-* Error handling everywhere
+43 tests covering database, agents, tools, RAG pipeline, schemas, and configuration.
 
 ---
 
-## 🚀 Future Enhancements
+## 📄 License
 
-* 📱 Mobile App (React Native)
-* ☁️ Cloud DB (PostgreSQL / Supabase)
-* 👥 Group Study Feature
-* 📄 PDF Notes + AI Tutor (RAG)
-* 🔄 Multi-device sync
+MIT License
 
 ---
 
-## 👨‍💻 Author
+## 🤝 Contributing
 
-**Ullas204**
-
----
-
-## ⭐ Final Note
-
-This is a **fully functional AI-powered academic system** — not a demo.
-
-👉 Built with production-level architecture
-👉 Handles real-world failures (API, DB, UI)
-👉 Designed for scalability & extensibility
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
 ---
 
-💡 *“Plan smarter. Study better. Achieve more.”*
+**Built with LangChain + Streamlit + Google Gemini + FAISS + HuggingFace**
